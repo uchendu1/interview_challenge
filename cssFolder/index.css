@@ -135,7 +135,7 @@
     top: 0;
     left: 0;
     z-index: 0;
-    /* list-style: none; */
+    list-style: none;
     margin: 0;
     padding: 0;
    
@@ -153,32 +153,33 @@
     opacity: 0;
     z-index: 0;
     animation: imageAnimation 50s linear infinite; 
-    /* content: " "; */
+    content: " ";
   }
 
   .slideshow li:nth-child(1) { 
-    background-image: url(http://i.imgur.com/K3mPv14.jpg) 
+    background-image: url(https://bit.ly/33su53C) 
   }
   .slideshow li:nth-child(2) { 
-    background-image: url(http://i.imgur.com/SBEmFpv.jpg);
+    background-image: url(https://bit.ly/3a4ur1F);
     animation-delay: 10s; 
   }
   .slideshow li:nth-child(3) { 
-    background-image: url(http://i.imgur.com/emvhOnb.jpg);
+    background-image: url(http://i.imgur.com/SBEmFpv.jp);
     animation-delay: 20s; 
   }
   .slideshow li:nth-child(4) { 
-    background-image: url(http://i.imgur.com/2LSMCmJ.jpg);
+    background-image: url(https://bit.ly/3fsZu8A);
     animation-delay: 30s; 
   }
   .slideshow li:nth-child(5) { 
-    background-image: url(http://i.imgur.com/TVGe0Ef.jpg);
+    background-image: url(https://bit.ly/3gxDHxH);
     animation-delay: 40s; 
   }
   .slideshow li:nth-child(5) { 
-    background-image: url(https://www.w3schools.com/w3images/fjords.jpg);
+    background-image: url(https://bit.ly/3gxDHxH);
     animation-delay: 40s; 
-  }
+  } 
+  
 
   @keyframes imageAnimation { 
     0% { 
