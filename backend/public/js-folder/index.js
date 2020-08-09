@@ -64,46 +64,49 @@ var checkTexts = /^[a-zA-Z ]+$/;
 
 function validate(e) {
 
-e.preventDefault();
+  e.preventDefault();
   var username = document.myForm.username.value;
-var password = document.myForm.password.value;
-var email = document.myForm.email.value;
+  var password = document.myForm.password.value;
+  var email = document.myForm.email.value;
 
-// email validation
+  // email validation
 
-function validateEmail() {
-  atpos = email.indexOf("@");
-  dotpos = email.lastIndexOf(".");
+  function validateEmail() {
+    atpos = email.indexOf("@");
+    dotpos = email.lastIndexOf(".");
 
-  if (atpos < 1 || (dotpos - atpos < 2)) {
-    alert("Please enter correct email ID")
-    document.myForm.email.focus();
-    return false;
+    if (atpos < 1 || (dotpos - atpos < 2)) {
+      alert("Please enter correct email ID")
+      document.myForm.email.focus();
+      return false;
+    }
+    return (true);
   }
-  return (true);
-}
 
-function validateText(){
-  if (username !== checkTexts){
-    alert('Enter texts only')
-    document.myForm.username.focus();
-    return false;
+  function validateText() {
+    if (username !== checkTexts) {
+      alert('Enter texts only')
+      document.myForm.username.focus();
+      return false;
+    }
+    return (true);
   }
-  return (true);
-} 
-const data = {
-  username: username, password:password, email:email 
-}
-console.log(data);
+  const data = {
+    username: username,
+    password: password,
+    email: email
+  }
+  console.log(data);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", '/signup', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(data));
+  xhr.onload = function () {
+    var data = JSON.parse(this.responseText);
+    console.log(this.response);
+    localStorage.setItem("token", this.response.token);
+    localStorage.setItem("userObj", JSON.stringify(this.response.user));
+    window.location.href = "to-do-lists.html"
 
-fetch("/signup", {
-  method: "POST", 
-  body: JSON.stringify(data)
-}).then(res => {
-  console.
-  log("Request complete! response:", res);
-});
-// window.location.href = "to-do-lists.html"
+  };
 };
-
-

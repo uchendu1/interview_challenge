@@ -40,12 +40,13 @@ app.get('/', (req, res) => {
 
 app.post("/signup", async(req, res) => {
     try {
-        console.log(req);
+        console.log(req.body);
         let signupData = req.body;
         console.log(signupData);
-        let newUser = await new User(signupData).save()
-        res.send(newUser)
-    } catch (e) {
+        let user = await new User(signupData).save()
+        const token = await user.generateAuthToken()
+        res.send({user,token})    } 
+        catch (e) {
         console.log(e.message);
     }
 })
