@@ -56,18 +56,33 @@ function newElement() {
 
 
 // ======================== sign up
-function formValidation(form) {
 
+var checkTexts = /^[a-zA-Z ]+$/;
+// var checkPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+// var checkEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+var username = document.myForm.username.value;
+var password = document.myForm.password.value;
+var email = document.myForm.email.value;
 
-var username = document.getElementById('username').value;
-  var pswrd = document.getElementById('pasword').pasword.value;
-  var email = document.getElementById('email').email.value;
-  var checkTexts = /^[a-zA-Z ]+$/;
-  var checkPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
-  var checkEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+// email validation
 
+function validateEmail() {
+  atpos = email.indexOf("@");
+  dotpos = email.lastIndexOf(".");
+
+  if (atpos < 1 || (dotpos - atpos < 2)) {
+    alert("Please enter correct email ID")
+    document.myForm.email.focus();
+    return false;
+  }
+  return (true);
 }
-  
-  
 
-  
+function validateText(){
+  if (username !== checkTexts){
+    alert('Enter texts only')
+    document.myForm.username.focus();
+    return false;
+  }
+  return (true);
+} 
