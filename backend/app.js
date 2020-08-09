@@ -27,6 +27,7 @@ mongoose.connection.on('error', (err) => {
 // use middlewares 
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true}));
 
 // import all schemas
 const User = require('./models/user');
