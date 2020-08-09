@@ -6,10 +6,10 @@ const jwt = require('jsonwebtoken')
 const app = express();
 const path = require('path');
 
-// declared my server port
-const port = 3000
 
 // connected my db(mongodb)
+var db =     "mongodb+srv://linda_1:lindy@yelpcamp-zn65v.mongodb.net/linter?retryWrites=true&w=majority";
+
 mongoose.connect("mongodb://localhost/linter", {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -17,7 +17,7 @@ mongoose.connect("mongodb://localhost/linter", {
     useUnifiedTopology: true
 });
 mongoose.connection.on('connected', () => {
-    console.log('connected to database ' + "mongodb://localhost/linter");
+    console.log('connected to database ' + db);
 });
 
 mongoose.connection.on('error', (err) => {
@@ -45,10 +45,10 @@ app.post("/signup", async(req, res) => {
         console.log(signupData);
         let user = await new User(signupData).save()
         const token = await user.generateAuthToken()
-        res.send({user,token})    } 
+        res.status(201).send({user,token})    } 
         catch (e) {
-        console.log(e.message);
-    }
+            res.status(400).send(error.message)
+        }
 })
 
 // user login
@@ -64,6 +64,8 @@ app.post('/login', async(req, res, next) => {
     }
 })
 
+// declared my server port
+const port = process.env.PORT || 3000
 // started server here
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -102,11 +102,67 @@ function validate(e) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(data));
   xhr.onload = function () {
-    var data = JSON.parse(this.responseText);
-    console.log(this.response);
-    localStorage.setItem("token", this.response.token);
-    localStorage.setItem("userObj", JSON.stringify(this.response.user));
-    window.location.href = "to-do-lists.html"
+    if(xhr.status == 201){
+      var data = JSON.parse(this.responseText);
+      console.log(this.response);
+      localStorage.setItem("token", this.response.token);
+      localStorage.setItem("userObj", JSON.stringify(this.response.user));
+      window.location.href = "to-do-lists.html"
+    } else{
+      console.log(xhr);
+      alert(xhr.responseText);
+    }
+    
+
+  };
+};
+
+
+// login validate
+
+function login(e) {
+
+  e.preventDefault();
+  // var username = document.myForm.username.value;
+  var password = document.myForm.password.value;
+  var email = document.myForm.email.value;
+
+  // email validation
+
+  function validateEmail() {
+    atpos = email.indexOf("@");
+    dotpos = email.lastIndexOf(".");
+
+    if (atpos < 1 || (dotpos - atpos < 2)) {
+      alert("Please enter correct email ID")
+      document.myForm.email.focus();
+      return false;
+    }
+    return (true);
+  }
+
+ 
+  const data = {
+    password: password,
+    email: email
+  }
+  console.log(data);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", '/login', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(data));
+  xhr.onload = function () {
+    if(xhr.status == 200){
+      var data = JSON.parse(this.responseText);
+      console.log(this.response);
+      localStorage.setItem("token", this.response.token);
+      localStorage.setItem("userObj", JSON.stringify(this.response.user));
+      window.location.href = "to-do-lists.html"
+    } else{
+      console.log(xhr);
+      alert(xhr.responseText);
+    }
+    
 
   };
 };
