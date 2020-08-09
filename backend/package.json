@@ -8,6 +8,13 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+
+  "keywords": [
+    "heroku"
+  ],
+  "engines": {
+    "node": "10.16.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
