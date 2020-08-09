@@ -10,7 +10,7 @@ const path = require('path');
 // connected my db(mongodb)
 var db =     "mongodb+srv://linda_1:lindy@yelpcamp-zn65v.mongodb.net/linter?retryWrites=true&w=majority";
 
-mongoose.connect("mongodb://localhost/linter", {
+mongoose.connect(db, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
