@@ -34,7 +34,7 @@ timestamps: true
 
 userSchema.methods.generateAuthToken = async function() {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, "www.w.w.w.w.w.", { expiresIn: '2d' })
+    const token = jwt.sign({ _id: user._id.toString() }, "thisismysecret", { expiresIn: '2d' })
 
     user.tokens = user.tokens.concat({ token })
     await user.save()

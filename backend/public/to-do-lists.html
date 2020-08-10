@@ -14,30 +14,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        type="text/css" />
-    <link rel="stylesheet" type="text/css" href="your_website_domain/css_root/flaticon.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    
     <link rel="stylesheet" type="text/css" href="cssFolder/index.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
 </head>
-<body>
+<body onload="getTasks()">
     <div class=" col-12 header">
         <h2>My To Do List</h2>
         <input type="text" id="myInput" placeholder="Title...">
-        <span onclick="newElement()" class="addBtn">Add</span>
+        <button onclick="newElement()" class="addBtn">Add</button>
       </div>
       
       <div class="col-12">  
 
       <ul id="myUL" class="activities">
-        <li>Hit the gym</li>
-        <li>Take a nap</li>
-        <li>Make smoothie
-        <li>Read a book</li>
-
       </ul>
     </div>
 

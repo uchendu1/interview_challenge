@@ -1,3 +1,5 @@
+
+
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
 var i;
@@ -27,31 +29,130 @@ list.addEventListener('click', function (ev) {
   }
 }, false);
 
+// get 
+async function getTasks(){
+  const options= {
+    "headers":{
+      "Authorization": localStorage.getItem("token")
+    }
+  }
+  try{
+    const response = await fetch('/mytasks', options )
+    const json = await response.json()
+    const data = json.tasks
+    const lists = document.getElementById("myUL");
+    if (response.ok){
+      data.forEach((item)=> {
+        const li = document.createElement("li");
+        li.innerText = item.title
+        const span = document.createElement("SPAN");
+        const txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.setAttribute("data-id", item._id)
+        span.appendChild(txt);
+        li.appendChild(span);
+        lists.appendChild(li)
+      })
+      deleteEvent()
+
+    }else{
+      alert(json.message)
+    }}catch(e){
+      console.log(e)
+    }
+}
+
+async function deleteRequest(itemId){
+ 
+      const options= {
+        method:"POST",
+        "headers":{
+          "Authorization": localStorage.getItem("token")
+        }
+      }
+      try{
+        const response = await fetch(`/deletetask/${itemId}`, options)
+        const json = await response.json()
+        if(response.ok){
+          alert(json.message)
+        }
+
+      }catch(e){
+        alert(json.message)
+      }
+}
+
+function deleteEvent(){
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = async function (e) {
+      try{
+        await deleteRequest(e.target.dataset.id)
+        const div = this.parentElement;
+        div.style.display = "none";
+        
+      }catch(e){
+        alert(e.message)
+      }
+
+    }
+  }
+}
+
 // Create a new list item when clicking on the "Add" button
-function newElement() {
+async function newElement() {
+
   var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
-  var t = document.createTextNode(inputValue);
+  var inputValue = document.getElementById("myInput");
+  var t = document.createTextNode(inputValue.value);
   li.appendChild(t);
+
   if (inputValue === '') {
     alert("You must write something!");
   } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
 
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function () {
-      var div = this.parentElement;
-      div.style.display = "none";
+    const body = {
+      title: inputValue.value
     }
+
+    const options= {
+      "method": "POST",
+      "headers":{
+        "Content-Type":"application/json;charset=utf-8",
+        "Authorization": localStorage.getItem("token")
+      }
+    }
+
+    options.body = JSON.stringify(body)
+    try{
+      const response = await fetch('/addtask', options )
+      const json = await response.json()
+      console.log(json)
+
+      if (response.ok){
+        document.getElementById("myUL").appendChild(li);
+        inputValue.value = ""
+    
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
+      
+        deleteEvent()
+      }else{
+        alert(json.message)
+      }
+    }catch (e){
+      alert(e.message)
+    }
+
+
+   
   }
+  // document.getElementById("myInput").value = "";
+  
+
+
 }
 
 
@@ -146,7 +247,7 @@ function login(e) {
     password: password,
     email: email
   }
-  console.log(data);
+
   var xhr = new XMLHttpRequest();
   xhr.open("POST", '/login', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -154,15 +255,16 @@ function login(e) {
   xhr.onload = function () {
     if(xhr.status == 200){
       var data = JSON.parse(this.responseText);
+      console.log(this.responseText);
       console.log(this.response);
-      localStorage.setItem("token", this.response.token);
-      localStorage.setItem("userObj", JSON.stringify(this.response.user));
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userObj", JSON.stringify(data.user));
       window.location.href = "to-do-lists.html"
     } else{
       console.log(xhr);
       alert(xhr.responseText);
     }
-    
-
+     
   };
 };
