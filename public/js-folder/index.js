@@ -1,5 +1,3 @@
-
-
 // Create a "close" button and append it to each list item
 var myNodelist = document.getElementsByTagName("LI");
 var i;
@@ -11,15 +9,6 @@ for (i = 0; i < myNodelist.length; i++) {
   myNodelist[i].appendChild(span);
 }
 
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function () {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
-}
 
 // Add a "checked" symbol when clicking on a list item
 var list = document.querySelector('ul');
@@ -29,20 +18,53 @@ list.addEventListener('click', function (ev) {
   }
 }, false);
 
-// get 
-async function getTasks(){
-  const options= {
-    "headers":{
+// Click on a close button to hide the current list item
+document.getElementById("myUL").onclick = async function (e) {
+  if (e.target.className == "close") {
+    try {
+      await deleteRequest(e.target.dataset.id)
+      const parentElem = e.target.parentNode
+      parentElem.remove()
+
+    } catch (e) {
+      alert(e.message)
+    }
+  }
+}
+
+async function deleteRequest(itemId) {
+  const options = {
+    method: "POST",
+    "headers": {
       "Authorization": localStorage.getItem("token")
     }
   }
-  try{
-    const response = await fetch('/mytasks', options )
+  try {
+    const response = await fetch(`/deletetask/${itemId}`, options)
+    const json = await response.json()
+    if (response.ok) {
+      alert(json.message)
+    }
+
+  } catch (e) {
+    alert(json.message)
+  }
+}
+
+// get tasks
+async function getTasks() {
+  const options = {
+    "headers": {
+      "Authorization": localStorage.getItem("token")
+    }
+  }
+  try {
+    const response = await fetch('/mytasks', options)
     const json = await response.json()
     const data = json.tasks
     const lists = document.getElementById("myUL");
-    if (response.ok){
-      data.forEach((item)=> {
+    if (response.ok) {
+      data.forEach((item) => {
         const li = document.createElement("li");
         li.innerText = item.title
         const span = document.createElement("SPAN");
@@ -53,48 +75,12 @@ async function getTasks(){
         li.appendChild(span);
         lists.appendChild(li)
       })
-      deleteEvent()
 
-    }else{
+    } else {
       alert(json.message)
-    }}catch(e){
-      console.log(e)
     }
-}
-
-async function deleteRequest(itemId){
- 
-      const options= {
-        method:"POST",
-        "headers":{
-          "Authorization": localStorage.getItem("token")
-        }
-      }
-      try{
-        const response = await fetch(`/deletetask/${itemId}`, options)
-        const json = await response.json()
-        if(response.ok){
-          alert(json.message)
-        }
-
-      }catch(e){
-        alert(json.message)
-      }
-}
-
-function deleteEvent(){
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = async function (e) {
-      try{
-        await deleteRequest(e.target.dataset.id)
-        const div = this.parentElement;
-        div.style.display = "none";
-        
-      }catch(e){
-        alert(e.message)
-      }
-
-    }
+  } catch (e) {
+    alert(e.message)
   }
 }
 
@@ -114,44 +100,34 @@ async function newElement() {
       title: inputValue.value
     }
 
-    const options= {
+    const options = {
       "method": "POST",
-      "headers":{
-        "Content-Type":"application/json;charset=utf-8",
+      "headers": {
+        "Content-Type": "application/json;charset=utf-8",
         "Authorization": localStorage.getItem("token")
       }
     }
 
     options.body = JSON.stringify(body)
-    try{
-      const response = await fetch('/addtask', options )
+    try {
+      const response = await fetch('/addtask', options)
       const json = await response.json()
-      console.log(json)
-
-      if (response.ok){
+      if (response.ok) {
         document.getElementById("myUL").appendChild(li);
         inputValue.value = ""
-    
+
         var span = document.createElement("SPAN");
         var txt = document.createTextNode("\u00D7");
         span.className = "close";
         span.appendChild(txt);
         li.appendChild(span);
-      
-        deleteEvent()
-      }else{
+      } else {
         alert(json.message)
       }
-    }catch (e){
+    } catch (e) {
       alert(e.message)
     }
-
-
-   
   }
-  // document.getElementById("myInput").value = "";
-  
-
 
 }
 
@@ -159,9 +135,6 @@ async function newElement() {
 // ======================== sign up
 
 var checkTexts = /^[a-zA-Z ]+$/;
-// var checkPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
-// var checkEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
 
 function validate(e) {
 
@@ -203,26 +176,22 @@ function validate(e) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(data));
   xhr.onload = function () {
-    if(xhr.status == 201){
+    if (xhr.status == 201) {
       var data = JSON.parse(this.responseText);
       console.log(this.response);
       localStorage.setItem("token", this.response.token);
       localStorage.setItem("userObj", JSON.stringify(this.response.user));
       window.location.href = "to-do-lists.html"
-    } else{
+    } else {
       console.log(xhr);
       alert(xhr.responseText);
     }
-    
-
   };
 };
 
 
 // login validate
-
 function login(e) {
-
   e.preventDefault();
   // var username = document.myForm.username.value;
   var password = document.myForm.password.value;
@@ -242,7 +211,7 @@ function login(e) {
     return (true);
   }
 
- 
+
   const data = {
     password: password,
     email: email
@@ -253,7 +222,7 @@ function login(e) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(data));
   xhr.onload = function () {
-    if(xhr.status == 200){
+    if (xhr.status == 200) {
       var data = JSON.parse(this.responseText);
       console.log(this.responseText);
       console.log(this.response);
@@ -261,10 +230,10 @@ function login(e) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("userObj", JSON.stringify(data.user));
       window.location.href = "to-do-lists.html"
-    } else{
+    } else {
       console.log(xhr);
       alert(xhr.responseText);
     }
-     
+
   };
 };
