@@ -123,9 +123,12 @@ app.get("/mytasks", auth, async(req, res) => {
     }
 })
 
+
 app.post("/deletetask/:taskID", auth, async(req, res)=> {
     try{
-        const task =  await Task.findByIdAndRemove(req.params.taskID)
+        // const task =  await Task.findByIdAndRemove(req.params.taskID)
+        const task = await Task.findByIdAndRemove({ _id: req.params.taskID })
+
         if(!task) return res.status(404).send({message: "Not found"})
         res.status(200).send({message: "TO-DO deleted", task})
     }catch(e){
