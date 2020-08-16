@@ -32,6 +32,7 @@ document.getElementById("myUL").onclick = async function (e) {
   }
 }
 
+// to delete tasks
 async function deleteRequest(itemId) {
   const options = {
     method: "POST",
@@ -41,13 +42,13 @@ async function deleteRequest(itemId) {
   }
   try {
     const response = await fetch(`/deletetask/${itemId}`, options)
-    const json = await response.json()
+    const json = await response.json();
     if (response.ok) {
       alert(json.message)
     }
 
   } catch (e) {
-    alert(json.message)
+    alert(e.message)
   }
 }
 
@@ -85,6 +86,7 @@ async function getTasks() {
 }
 
 // Create a new list item when clicking on the "Add" button
+
 async function newElement() {
 
   var li = document.createElement("li");
@@ -179,8 +181,8 @@ function validate(e) {
     if (xhr.status == 201) {
       var data = JSON.parse(this.responseText);
       console.log(this.response);
-      localStorage.setItem("token", this.response.token);
-      localStorage.setItem("userObj", JSON.stringify(this.response.user));
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userObj", JSON.stringify(data.user));
       window.location.href = "to-do-lists.html"
     } else {
       console.log(xhr);
@@ -190,15 +192,18 @@ function validate(e) {
 };
 
 
-// login validate
+
+
+
+// ==================================
+
+//login validate
 function login(e) {
   e.preventDefault();
-  // var username = document.myForm.username.value;
   var password = document.myForm.password.value;
   var email = document.myForm.email.value;
 
   // email validation
-
   function validateEmail() {
     atpos = email.indexOf("@");
     dotpos = email.lastIndexOf(".");
@@ -210,7 +215,6 @@ function login(e) {
     }
     return (true);
   }
-
 
   const data = {
     password: password,
@@ -237,3 +241,4 @@ function login(e) {
 
   };
 };
+
