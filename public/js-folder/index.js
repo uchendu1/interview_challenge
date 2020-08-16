@@ -66,15 +66,8 @@ async function getTasks() {
     const lists = document.getElementById("myUL");
     if (response.ok) {
       data.forEach((item) => {
-        const li = document.createElement("li");
-        li.innerText = item.title
-        const span = document.createElement("SPAN");
-        const txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.setAttribute("data-id", item._id)
-        span.appendChild(txt);
-        li.appendChild(span);
-        lists.appendChild(li)
+        
+        lists.appendChild(createTaskRow(item))
       })
 
     } else {
@@ -85,6 +78,17 @@ async function getTasks() {
   }
 }
 
+const createTaskRow = (item) => {
+  const li = document.createElement("li");
+  li.innerText = item.title
+  const span = document.createElement("SPAN");
+  const txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.setAttribute("data-id", item._id)
+  span.appendChild(txt);
+  li.appendChild(span);
+  return li
+}
 // Create a new list item when clicking on the "Add" button
 
 async function newElement() {
@@ -113,18 +117,13 @@ async function newElement() {
     options.body = JSON.stringify(body)
     try {
       const response = await fetch('/addtask', options)
-      const json = await response.json()
+      const {msg, task} = await response.json()
       if (response.ok) {
-        document.getElementById("myUL").appendChild(li);
+        document.getElementById("myUL").appendChild(createTaskRow(task));
         inputValue.value = ""
 
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        li.appendChild(span);
       } else {
-        alert(json.message)
+        alert(msg)
       }
     } catch (e) {
       alert(e.message)
