@@ -8,7 +8,7 @@ const path = require('path');
 
 
 // connected my db(mongodb)
-var db =     "mongodb+srv://linda_1:lindy@yelpcamp-zn65v.mongodb.net/linter?retryWrites=true&w=majority";
+var db = "mongodb+srv://linda_1:lindy@yelpcamp-zn65v.mongodb.net/linter?retryWrites=true&w=majority";
 
 mongoose.connect(db, {
     useNewUrlParser: true,

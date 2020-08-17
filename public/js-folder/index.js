@@ -18,6 +18,8 @@ list.addEventListener('click', function (ev) {
   }
 }, false);
 
+
+
 // Click on a close button to hide the current list item
 document.getElementById("myUL").onclick = async function (e) {
   if (e.target.className == "close") {
@@ -166,11 +168,17 @@ function validate(e) {
     }
     return (true);
   }
+
+
   const data = {
     username: username,
     password: password,
     email: email
   }
+
+
+  // const  { username, password, email } = data
+
   console.log(data);
   var xhr = new XMLHttpRequest();
   xhr.open("POST", '/signup', true);
